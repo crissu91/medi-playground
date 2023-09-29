@@ -16,11 +16,11 @@ const patientList = [
     temperature: 37.1,
   },
   {
-    airOrOxigen: "oxigen", //2
-    consciousness: "CVPU", //3
-    respirationRange: 23, // 2
-    spO2: 88, // 0
-    temperature: 38.5, // 1
+    airOrOxigen: "oxigen",
+    consciousness: "CVPU",
+    respirationRange: 23,
+    spO2: 88,
+    temperature: 38.5,
   },
 ];
 
