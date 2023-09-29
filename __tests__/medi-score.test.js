@@ -58,4 +58,19 @@ describe("mediScoreCalc()", () => {
     // equal or more than 97 on oxigen should return 5 (3+2)
     expect(mediScoreCalc({ spO2: 97, airOrOxigen: "oxigen" })).toBe(5);
   });
+  test("should return a score when receiving temperature as an input", () => {
+    // less or equal to 35 should return 3
+    expect(mediScoreCalc({ temperature: 35 })).toBe(3);
+    // between 35.1 - 36 should return 1
+    expect(mediScoreCalc({ temperature: 35.1 })).toBe(1);
+    expect(mediScoreCalc({ temperature: 36 })).toBe(1);
+    // between 36.1 - 38 should return 0
+    expect(mediScoreCalc({ temperature: 36.1 })).toBe(0);
+    expect(mediScoreCalc({ temperature: 38 })).toBe(0);
+    //between 38.1 - 39 should return 1
+    expect(mediScoreCalc({ temperature: 38.1 })).toBe(1);
+    expect(mediScoreCalc({ temperature: 39 })).toBe(1);
+    // equal or more than 39.1 should return 3
+    expect(mediScoreCalc({ temperature: 39.1 })).toBe(3);
+  });
 });

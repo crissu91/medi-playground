@@ -48,6 +48,21 @@ function mediScoreCalc(input) {
       score += 3;
       break;
   }
+  switch (true) {
+    case input.temperature <= 35:
+      score += 3;
+      break;
+    case input.temperature >= 35.1 && input.temperature <= 36:
+      score += 1;
+      break;
+    case input.temperature >= 38.1 && input.temperature <= 39:
+      score += 1;
+      break;
+    case input.temperature >= 39.1:
+      score += 3;
+      break;
+  }
+
   return score;
 }
 
