@@ -7,9 +7,15 @@ const patientData = {
 };
 
 function mediScoreCalc(input) {
-  if (input.airOrOxigen === "air") {
-    return 0;
-  } else return 2;
+  let score = 0;
+  if (input.airOrOxigen === "oxigen") {
+    score += 2;
+  }
+  if (input.consciousness === "CVPU") {
+    score += 3;
+  }
+
+  return score;
 }
 
 module.exports = mediScoreCalc;
