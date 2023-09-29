@@ -34,4 +34,28 @@ describe("mediScoreCalc()", () => {
     expect(mediScoreCalc({ respirationRange: 25 })).toBe(3);
     expect(mediScoreCalc({ respirationRange: 30 })).toBe(3);
   });
+  test("should return a score when receiving SpO2 as an input", () => {
+    // less or equal to 83 should return 3
+    expect(mediScoreCalc({ spO2: 83 })).toBe(3);
+    expect(mediScoreCalc({ spO2: 79 })).toBe(3);
+    // between 84 - 85 should return 2
+    expect(mediScoreCalc({ spO2: 84 })).toBe(2);
+    expect(mediScoreCalc({ spO2: 85 })).toBe(2);
+    // between 86 - 87 should return 1
+    expect(mediScoreCalc({ spO2: 86 })).toBe(1);
+    expect(mediScoreCalc({ spO2: 87 })).toBe(1);
+    // between 88 - 92 or more or equal to 93 on air
+    expect(mediScoreCalc({ spO2: 88 })).toBe(0);
+    expect(mediScoreCalc({ spO2: 92 })).toBe(0);
+    // equal or more than 93 on air should return 0
+    expect(mediScoreCalc({ spO2: 93, airOrOxigen: "air" })).toBe(0);
+    //between 93 - 94 on oxigen should return 3 (1 + 2)
+    expect(mediScoreCalc({ spO2: 93, airOrOxigen: "oxigen" })).toBe(3);
+    expect(mediScoreCalc({ spO2: 94, airOrOxigen: "oxigen" })).toBe(3);
+    //between 95 - 96 on oxigen should return 4 (2+2)
+    expect(mediScoreCalc({ spO2: 95, airOrOxigen: "oxigen" })).toBe(4);
+    expect(mediScoreCalc({ spO2: 96, airOrOxigen: "oxigen" })).toBe(4);
+    // equal or more than 97 on oxigen should return 5 (3+2)
+    expect(mediScoreCalc({ spO2: 97, airOrOxigen: "oxigen" })).toBe(5);
+  });
 });

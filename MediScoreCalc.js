@@ -28,6 +28,26 @@ function mediScoreCalc(input) {
       score += 3;
       break;
   }
+  switch (true) {
+    case input.spO2 <= 83:
+      score += 3;
+      break;
+    case input.spO2 >= 84 && input.spO2 <= 85:
+      score += 2;
+      break;
+    case input.spO2 >= 86 && input.spO2 <= 87:
+      score += 1;
+      break;
+    case input.spO2 >= 93 && input.spO2 <= 94 && input.airOrOxigen === "oxigen":
+      score += 1;
+      break;
+    case input.spO2 >= 95 && input.spO2 <= 96 && input.airOrOxigen === "oxigen":
+      score += 2;
+      break;
+    case input.spO2 >= 95 && input.airOrOxigen === "oxigen":
+      score += 3;
+      break;
+  }
   return score;
 }
 
