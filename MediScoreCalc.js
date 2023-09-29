@@ -1,9 +1,50 @@
-const patientData = {
-  airOrOxigen: "air",
-  consciousness: "alert",
-  respirationRange: 15,
-  spO2: 95,
-  temperature: 37.1,
+const calculateRespirationScore = (respirationRange) => {
+  switch (true) {
+    case respirationRange <= 8:
+      return 3;
+    case respirationRange >= 9 && respirationRange <= 11:
+      return 1;
+    case respirationRange >= 21 && respirationRange <= 24:
+      return 2;
+    case respirationRange >= 25:
+      return 3;
+    default:
+      return 0;
+  }
+};
+
+const calculateSpO2Score = (spO2, airOrOxigen) => {
+  switch (true) {
+    case spO2 <= 83:
+      return 3;
+    case spO2 >= 84 && spO2 <= 85:
+      return 2;
+    case spO2 >= 86 && spO2 <= 87:
+      return 1;
+    case spO2 >= 93 && spO2 <= 94 && airOrOxigen === "oxigen":
+      return 1;
+    case spO2 >= 95 && spO2 <= 96 && airOrOxigen === "oxigen":
+      return 2;
+    case spO2 >= 95 && airOrOxigen === "oxigen":
+      return 3;
+    default:
+      return 0;
+  }
+};
+
+const calculateTemperatureScore = (temperature) => {
+  switch (true) {
+    case temperature <= 35:
+      return 3;
+    case temperature >= 35.1 && temperature <= 36:
+      return 1;
+    case temperature >= 38.1 && temperature <= 39:
+      return 1;
+    case temperature >= 39.1:
+      return 3;
+    default:
+      return 0;
+  }
 };
 
 function mediScoreCalc(input) {
@@ -14,54 +55,9 @@ function mediScoreCalc(input) {
   if (input.consciousness === "CVPU") {
     score += 3;
   }
-  switch (true) {
-    case input.respirationRange <= 8:
-      score += 3;
-      break;
-    case input.respirationRange >= 9 && input.respirationRange <= 11:
-      score += 1;
-      break;
-    case input.respirationRange >= 21 && input.respirationRange <= 24:
-      score += 2;
-      break;
-    case input.respirationRange >= 25:
-      score += 3;
-      break;
-  }
-  switch (true) {
-    case input.spO2 <= 83:
-      score += 3;
-      break;
-    case input.spO2 >= 84 && input.spO2 <= 85:
-      score += 2;
-      break;
-    case input.spO2 >= 86 && input.spO2 <= 87:
-      score += 1;
-      break;
-    case input.spO2 >= 93 && input.spO2 <= 94 && input.airOrOxigen === "oxigen":
-      score += 1;
-      break;
-    case input.spO2 >= 95 && input.spO2 <= 96 && input.airOrOxigen === "oxigen":
-      score += 2;
-      break;
-    case input.spO2 >= 95 && input.airOrOxigen === "oxigen":
-      score += 3;
-      break;
-  }
-  switch (true) {
-    case input.temperature <= 35:
-      score += 3;
-      break;
-    case input.temperature >= 35.1 && input.temperature <= 36:
-      score += 1;
-      break;
-    case input.temperature >= 38.1 && input.temperature <= 39:
-      score += 1;
-      break;
-    case input.temperature >= 39.1:
-      score += 3;
-      break;
-  }
+  score += calculateRespirationScore(input.respirationRange);
+  score += calculateSpO2Score(input.spO2, input.airOrOxigen);
+  score += calculateTemperatureScore(input.temperature);
 
   return score;
 }
