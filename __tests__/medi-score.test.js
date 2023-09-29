@@ -22,6 +22,33 @@ const patientList = [
     spO2: 88,
     temperature: 38.5,
   },
+  {
+    airOrOxigen: "air",
+    consciousness: "alert",
+    respirationRange: 15,
+    spO2: 95,
+    temperature: 37.1,
+    CBG: 3.4,
+    fasted: true,
+  },
+  {
+    airOrOxigen: "oxigen",
+    consciousness: "alert",
+    respirationRange: 17,
+    spO2: 95,
+    temperature: 37.1,
+    CBG: 5.9,
+    fasted: false,
+  },
+  {
+    airOrOxigen: "oxigen",
+    consciousness: "CVPU",
+    respirationRange: 23,
+    spO2: 88,
+    temperature: 38.5,
+    CBG: 6,
+    fasted: true,
+  },
 ];
 
 describe("mediScoreCalc()", () => {
@@ -89,9 +116,34 @@ describe("mediScoreCalc()", () => {
     // equal or more than 39.1 should return 3
     expect(mediScoreCalc({ temperature: 39.1 })).toBe(3);
   });
+  test("should return a score when receiving CBG and a fasted boolean as an input", () => {
+    // CBG equal or less than 3.4 and fasted = true should return 3
+    expect(mediScoreCalc({ CBG: 3.4, fasted: true })).toBe(3);
+    // CBG between 3.5 and 3.9 and fasted = true should return 2
+    expect(mediScoreCalc({ CBG: 3.5, fasted: true })).toBe(2);
+    expect(mediScoreCalc({ CBG: 3.9, fasted: true })).toBe(2);
+    // CBG between 5.5 and 5.9 and fasted = true should return 2
+    expect(mediScoreCalc({ CBG: 5.5, fasted: true })).toBe(2);
+    expect(mediScoreCalc({ CBG: 5.9, fasted: true })).toBe(2);
+    // CBG equal or more than 6 and fasted = true should return 3
+    expect(mediScoreCalc({ CBG: 6, fasted: true })).toBe(3);
+    // CBG equal or less than 4.5 and fasted = false should return 3
+    expect(mediScoreCalc({ CBG: 4.5, fasted: false })).toBe(3);
+    // CBG between 4.6 and 5.8 and fasted = false should return 2
+    expect(mediScoreCalc({ CBG: 4.6, fasted: false })).toBe(2);
+    expect(mediScoreCalc({ CBG: 5.8, fasted: false })).toBe(2);
+    // CBG between 7.9 and 8.9 and fasted = false should return 2
+    expect(mediScoreCalc({ CBG: 7.9, fasted: false })).toBe(2);
+    expect(mediScoreCalc({ CBG: 8.9, fasted: false })).toBe(2);
+    // CBG more or equal to 9 and fasted = false should return 3
+    expect(mediScoreCalc({ CBG: 9, fasted: false })).toBe(3);
+  });
   test("should return the total score when receiving multiple inputs", () => {
     expect(mediScoreCalc(patientList[0])).toBe(0);
     expect(mediScoreCalc(patientList[1])).toBe(4);
     expect(mediScoreCalc(patientList[2])).toBe(8);
+    expect(mediScoreCalc(patientList[3])).toBe(3);
+    expect(mediScoreCalc(patientList[4])).toBe(4);
+    expect(mediScoreCalc(patientList[5])).toBe(11);
   });
 });

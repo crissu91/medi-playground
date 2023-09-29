@@ -47,6 +47,29 @@ const calculateTemperatureScore = (temperature) => {
   }
 };
 
+const calculateCbgScore = (CBG, fasted) => {
+  switch (true) {
+    case CBG <= 3.4 && fasted === true:
+      return 3;
+    case CBG >= 3.5 && CBG <= 3.9 && fasted === true:
+      return 2;
+    case CBG >= 5.5 && CBG <= 5.9 && fasted === true:
+      return 2;
+    case CBG >= 6 && fasted === true:
+      return 3;
+    case CBG <= 4.5 && fasted === false:
+      return 3;
+    case CBG >= 4.6 && CBG <= 5.8 && fasted === false:
+      return 2;
+    case CBG >= 7.9 && CBG <= 8.9 && fasted === false:
+      return 2;
+    case CBG >= 9 && fasted === false:
+      return 3;
+    default:
+      return 0;
+  }
+};
+
 function mediScoreCalc(input) {
   let score = 0;
   if (input.airOrOxigen === "oxigen") {
@@ -58,6 +81,7 @@ function mediScoreCalc(input) {
   score += calculateRespirationScore(input.respirationRange);
   score += calculateSpO2Score(input.spO2, input.airOrOxigen);
   score += calculateTemperatureScore(input.temperature);
+  score += calculateCbgScore(input.CBG, input.fasted);
 
   return score;
 }
