@@ -1,12 +1,28 @@
 const mediScoreCalc = require("../MediScoreCalc");
 
-const patientData = {
-  airOrOxigen: "air",
-  consciousness: "alert",
-  respirationRange: 15,
-  spO2: 95,
-  temperature: 37.1,
-};
+const patientList = [
+  {
+    airOrOxigen: "air",
+    consciousness: "alert",
+    respirationRange: 15,
+    spO2: 95,
+    temperature: 37.1,
+  },
+  {
+    airOrOxigen: "oxigen",
+    consciousness: "alert",
+    respirationRange: 17,
+    spO2: 95,
+    temperature: 37.1,
+  },
+  {
+    airOrOxigen: "oxigen", //2
+    consciousness: "CVPU", //3
+    respirationRange: 23, // 2
+    spO2: 88, // 0
+    temperature: 38.5, // 1
+  },
+];
 
 describe("mediScoreCalc()", () => {
   test("should return a score when receiving airOrOxigen as an input", () => {
@@ -72,5 +88,10 @@ describe("mediScoreCalc()", () => {
     expect(mediScoreCalc({ temperature: 39 })).toBe(1);
     // equal or more than 39.1 should return 3
     expect(mediScoreCalc({ temperature: 39.1 })).toBe(3);
+  });
+  test("should return the total score when receiving multiple inputs", () => {
+    expect(mediScoreCalc(patientList[0])).toBe(0);
+    expect(mediScoreCalc(patientList[1])).toBe(4);
+    expect(mediScoreCalc(patientList[2])).toBe(8);
   });
 });
